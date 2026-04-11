@@ -1,0 +1,73 @@
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl enable httpd
+systemctl start httpd
+
+cat > /var/www/html/index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Shared Services - Internal API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #020617;
+      padding: 24px 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      max-width: 480px;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid #38bdf8;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    pre {
+      text-align: left;
+      background: #020617;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      border: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="tag">Shared Services VPC</div>
+    <h1>PrivateLink Internal Service</h1>
+    <p>This internal API is only reachable from approved VPCs via AWS PrivateLink.</p>
+    <pre>{
+  "service": "shared-services-app",
+  "vpc": "shared-services-vpc",
+  "status": "healthy",
+  "access": "private-only"
+}</pre>
+  </div>
+</body>
+</html>
+EOF
